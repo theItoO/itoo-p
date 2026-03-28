@@ -18,6 +18,15 @@ const BOOT_RECEIVER =
 const START_RECEIVER =
   '<receiver android:exported = "true" android:name = "xyz.kumaraswamy.itoo.receivers.StartReceiver" />\n'
 
+function escapeXml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
 export function buildComponentBuildInfos({ selectedTypeIds, additionalPermissions, specialUseText }) {
   const selectedTypes = SERVICE_TYPES.filter(t => selectedTypeIds.has(t.id))
   const permissions = new Set(BASE_PERMISSIONS)
@@ -34,7 +43,7 @@ export function buildComponentBuildInfos({ selectedTypeIds, additionalPermission
   if (selectedTypes.length > 0) {
     const fgsType = selectedTypes.map(t => t.xmlType).join('|')
     const propertyLine = (selectedTypeIds.has('specialUse') && specialUseText.trim())
-      ? `<property android:name = "android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value = "${specialUseText.trim()}" />\n`
+      ? `<property android:name = "android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value = "${escapeXml(specialUseText.trim())}" />\n`
       : ''
     activities.push(
       `<service android:exported = "true" android:foregroundServiceType = "${fgsType}" ` +

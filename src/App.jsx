@@ -166,7 +166,7 @@ export default function App() {
         )}
       </div>
 
-      <div className={`toast${toast.show ? ' show' : ''}`}>{toast.msg}</div>
+      <div className={`toast${toast.show ? ' show' : ''}`} role="status" aria-live="polite" aria-atomic="true">{toast.msg}</div>
     </>
   )
 }
